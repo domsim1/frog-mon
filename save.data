@@ -1,1 +1,1 @@
-Frogmon {name = "Lisa", age = 0, weight = 0, gender = Female, lastCycle = 1598751688, hunger = 0, happiness = 0, hygiene = 0, entertainment = 0, discipline = 0, sickness = 10, shouldDiscipline = True, cyclesLived = 19, isAlive = True}
+Frogmon {name = "Colin", age = 0, weight = 9, gender = Female, lastCycle = 1598770166, hunger = 10, happiness = 5, hygiene = 10, entertainment = 10, discipline = 1, sickness = 0, shouldDiscipline = False, cyclesLived = 0, isAlive = True}

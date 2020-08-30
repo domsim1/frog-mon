@@ -15,14 +15,19 @@ processArgs :: IO ()
 processArgs = getArgs >>= process
 
 process :: [String] -> IO ()
-process ["-h"]        = help           >> exitSuccess
-process ["-help"]     = help           >> exitSuccess
-process ["-v"]        = version        >> exitSuccess
-process ["--version"] = version        >> exitSuccess
-process ["new"]       = newFrog        >> exitSuccess
-process ["check"]     = checkFrog      >> exitSuccess
-process []            = checkFrog      >> exitSuccess
-process _             = unknownCommand >> exitFailure
+process ["-h"]         = help           >> exitSuccess
+process ["-help"]      = help           >> exitSuccess
+process ["-v"]         = version        >> exitSuccess
+process ["--version"]  = version        >> exitSuccess
+process ["punish"]     = punishFrog     >> exitSuccess
+process ["clean"]      = cleanFrog      >> exitSuccess
+process ["heal"]       = healFrog       >> exitSuccess
+process ["feed"]       = feedFrog       >> exitSuccess
+process ["play"]       = playFrog       >> exitSuccess
+process ["new"]        = newFrog        >> exitSuccess
+process ["check"]      = checkFrog      >> exitSuccess
+process []             = checkFrog      >> exitSuccess
+process _              = unknownCommand >> exitFailure
 
 
 help :: IO ()
@@ -30,6 +35,41 @@ help = putStrLn "Yeah, Nah..."
 
 newFrog :: IO Frogmon
 newFrog = createFrogmon >>= save
+
+punishFrog :: IO Frogmon
+punishFrog = getFrog 
+    >>= cycleFrogmon 
+    >>= punishFogmon 
+    >>= printFrogOverview 
+    >>= save
+
+cleanFrog :: IO Frogmon
+cleanFrog = getFrog
+    >>= cycleFrogmon
+    >>= cleanForgmon
+    >>= printFrogOverview
+    >>= save
+
+healFrog :: IO Frogmon
+healFrog = getFrog
+    >>= cycleFrogmon
+    >>= healFrogmon
+    >>= printFrogOverview
+    >>= save
+
+playFrog :: IO Frogmon
+playFrog = getFrog
+    >>= cycleFrogmon
+    >>= playFrogmon
+    >>= printFrogOverview
+    >>= save
+
+feedFrog :: IO Frogmon
+feedFrog = getFrog
+    >>= cycleFrogmon
+    >>= feedFrogmon
+    >>= printFrogOverview
+    >>= save
 
 checkFrog :: IO Frogmon
 checkFrog = getFrog >>= cycleFrogmon >>= printFrogOverview >>= save

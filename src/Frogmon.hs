@@ -4,6 +4,11 @@ module Frogmon
     , createFrogmon
     , printFrogOverview
     , cycleFrogmon
+    , punishFogmon
+    , cleanForgmon
+    , healFrogmon
+    , playFrogmon
+    , feedFrogmon
     ) where
 
 import System.Random
@@ -41,8 +46,14 @@ frogEmoji = ['\128056']
 yellEmoji :: [Char]
 yellEmoji = ['\128495']
 
+skullEmoji :: [Char]
+skullEmoji = ['\128128']
+
+sickEmoji :: [Char]
+sickEmoji = ['\129440']
+
 secondsPerCycle :: Int
-secondsPerCycle = 10
+secondsPerCycle = 1800
 
 secondsPerDay :: Int
 secondsPerDay = 86400
@@ -134,16 +145,28 @@ getBar n = bar [1..10] "" n where
 
 printFrogOverview :: Frogmon -> IO Frogmon
 printFrogOverview frog = do
-    putStrLn $ if shouldDiscipline frog then frogEmoji ++ yellEmoji else frogEmoji
+    putStrLn $ getEmojiOverview (shouldDiscipline frog) (isAlive frog) (sickness frog)
     putStrLn $ "Name      : " ++ name frog 
     putStrLn $ "Gender    : " ++ (show $ gender frog)
     putStrLn $ "Age       : " ++ (show $ age frog) ++ " days"
+    putStrLn $ "Weight    : " ++ (show $ weight frog) ++ " Kg"
     putStrLn $ "Hunger    : " ++ (getBar $ hunger frog)
     putStrLn $ "Hygiene   : " ++ (getBar $ hygiene frog)
     putStrLn $ "Enjoyment : " ++ (getBar $ entertainment frog)
     putStrLn $ "Happiness : " ++ (getBar $ happiness frog)
     putStrLn $ "Discipline: " ++ (getBar $ discipline frog)
     return frog
+
+
+getEmojiOverview :: Bool -> Bool -> Int -> String
+getEmojiOverview _ False _ = skullEmoji
+getEmojiOverview True True 0 = frogEmoji ++ yellEmoji
+getEmojiOverview True True x = getSickEmojiString x ++ frogEmoji ++ yellEmoji
+getEmojiOverview _ _ _= frogEmoji
+
+getSickEmojiString :: Int -> String
+getSickEmojiString 1 = sickEmoji
+getSickEmojiString x = sickEmoji ++ getSickEmojiString (x - 1)
 
 
 calcAge :: Frogmon -> Int
@@ -187,6 +210,8 @@ calcDiscipline frog = if shouldDiscipline frog then
 calcSickness :: Frogmon -> IO Int
 calcSickness frog = if (hygiene frog) < 5
                     || (happiness  frog) < 5
+                    || (weight frog) < 6
+                    || (weight frog) > 18
                     then do
                         randNum <- randomRIO (0, 3) :: IO Int
                         return $ clampTen $ (sickness frog) + randNum
@@ -204,7 +229,7 @@ calcShouldDiscipline frog | shouldDiscipline frog = return True
 
 calcIsAlive :: Frogmon -> IO Bool
 calcIsAlive frog = if (sickness frog) > 0 then
-        if (sickness frog) > 10 || (weight frog) < 4 then
+        if (sickness frog) >= 10 || (weight frog) < 4 then
             return False
         else do
             let score = (sickness frog)
@@ -214,4 +239,92 @@ calcIsAlive frog = if (sickness frog) > 0 then
             randNum <- randomRIO (0, score)
             return $ randNum < 30 
     else return True
+
+punishFogmon :: Frogmon -> IO Frogmon
+punishFogmon frog = if (shouldDiscipline frog) then
+        return $ Frogmon
+        (name frog)
+        (age frog)
+        (weight frog)
+        (gender frog)
+        (lastCycle frog)
+        (hunger frog)
+        (happiness frog)
+        (hygiene frog)
+        (entertainment frog)
+        (clampTen ((discipline frog) + 1))
+        (sickness frog)
+        (False)
+        (cyclesLived frog)
+        (isAlive frog)
+    else
+        return frog
+
+cleanForgmon :: Frogmon -> IO Frogmon
+cleanForgmon frog = return $ Frogmon
+    (name frog)
+    (age frog)
+    (weight frog)
+    (gender frog)
+    (lastCycle frog)
+    (hunger frog)
+    (happiness frog)
+    (clampTen ((hygiene frog) + 1))
+    (entertainment frog)
+    (discipline frog)
+    (sickness frog)
+    (shouldDiscipline frog)
+    (cyclesLived frog)
+    (isAlive frog)
+
+healFrogmon :: Frogmon -> IO Frogmon
+healFrogmon frog = return $ Frogmon
+    (name frog)
+    (age frog)
+    (weight frog)
+    (gender frog)
+    (lastCycle frog)
+    (hunger frog)
+    (happiness frog)
+    (hygiene frog)
+    (entertainment frog)
+    (discipline frog)
+    (clampZero ((sickness frog) - 1))
+    (shouldDiscipline frog)
+    (cyclesLived frog)
+    (isAlive frog)
+
+playFrogmon :: Frogmon -> IO Frogmon
+playFrogmon frog = return $ Frogmon
+    (name frog)
+    (age frog)
+    (weight frog)
+    (gender frog)
+    (lastCycle frog)
+    (hunger frog)
+    (happiness frog)
+    (hygiene frog)
+    (clampTen ((entertainment frog) + 1))
+    (discipline frog)
+    (sickness frog)
+    (shouldDiscipline frog)
+    (cyclesLived frog)
+    (isAlive frog)
+
+feedFrogmon :: Frogmon -> IO Frogmon
+feedFrogmon frog = return $ Frogmon
+    (name frog)
+    (age frog)
+    (weight frog)
+    (gender frog)
+    (lastCycle frog)
+    (clampTen ((hunger frog) + 1))
+    (happiness frog)
+    (hygiene frog)
+    (entertainment frog)
+    (discipline frog)
+    (sickness frog)
+    (shouldDiscipline frog)
+    (cyclesLived frog)
+    (isAlive frog)
 
