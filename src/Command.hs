@@ -16,7 +16,7 @@ processArgs = getArgs >>= process
 
 process :: [String] -> IO ()
 process ["-h"]         = help           >> exitSuccess
-process ["--help"]      = help           >> exitSuccess
+process ["--help"]     = help           >> exitSuccess
 process ["-v"]         = version        >> exitSuccess
 process ["--version"]  = version        >> exitSuccess
 process ["punish"]     = punishFrog     >> exitSuccess
