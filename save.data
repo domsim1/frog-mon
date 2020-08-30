@@ -1,0 +1,1 @@
+Frogmon {name = "Lisa", age = 0, weight = 0, gender = Female, lastCycle = 1598751688, hunger = 0, happiness = 0, hygiene = 0, entertainment = 0, discipline = 0, sickness = 10, shouldDiscipline = True, cyclesLived = 19, isAlive = True}

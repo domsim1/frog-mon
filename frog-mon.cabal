@@ -1,0 +1,70 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 2ad26ddb6b8b1b658c2e4f9f2b323e438e935898f854ecdd690580c0b771e50e
+
+name:           frog-mon
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/frog-mon#readme>
+homepage:       https://github.com/githubuser/frog-mon#readme
+bug-reports:    https://github.com/githubuser/frog-mon/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2020 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/frog-mon
+
+library
+  exposed-modules:
+      Command
+      Frogmon
+      SaveData
+  other-modules:
+      Paths_frog_mon
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , random
+    , time
+  default-language: Haskell2010
+
+executable frog-mon-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_frog_mon
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , frog-mon
+    , random
+    , time
+  default-language: Haskell2010
+
+test-suite frog-mon-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_frog_mon
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , frog-mon
+    , random
+    , time
+  default-language: Haskell2010
