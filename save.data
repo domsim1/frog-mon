@@ -1,1 +1,0 @@
-Frogmon {name = "Colin", age = 0, weight = 9, gender = Female, lastCycle = 1598770166, hunger = 10, happiness = 5, hygiene = 10, entertainment = 10, discipline = 1, sickness = 0, shouldDiscipline = False, cyclesLived = 0, isAlive = True}

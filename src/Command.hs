@@ -31,7 +31,15 @@ process _              = unknownCommand >> exitFailure
 
 
 help :: IO ()
-help = putStrLn "Yeah, Nah..."
+help = do
+    putStrLn "-v, --version     Show version"
+    putStrLn "punish            Use to discipline a frogmon when it is yelling"
+    putStrLn "clean             Use to fill Hygiene bar"
+    putStrLn "heal              Use to cure a sick frogmon"
+    putStrLn "feed              Use to fill Hunger bar"
+    putStrLn "play              Use to fill Enjoyment bar"
+    putStrLn "new               Create a new frogmon, overwriting the old save"
+    putStrLn "check             Shows an overview of current frogmon, also runs if no command is provided"
 
 newFrog :: IO Frogmon
 newFrog = createFrogmon >>= save
